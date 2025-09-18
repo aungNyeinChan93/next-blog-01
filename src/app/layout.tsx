@@ -1,10 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
+import toast, { Toaster } from "react-hot-toast";
+import Navbar from "@/components/share/navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+});
+
+const popins = Poppins({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-poppins",
 });
 
 const geistMono = Geist_Mono({
@@ -27,7 +35,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <Navbar />
+        <main className={`container mx-auto  ${popins.className} `}>
+          <Toaster />
+          {children}
+        </main>
       </body>
     </html>
   );
