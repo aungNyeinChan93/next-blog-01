@@ -100,6 +100,7 @@ model Article {
   title      String
   body       String     @db.Text
   categories Category[]
+  image      String?
   author     User?      @relation(fields: [author_id], references: [id])
   author_id  String?
   comments   Comment[]
