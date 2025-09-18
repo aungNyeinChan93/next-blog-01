@@ -14,6 +14,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  user
+  admin
+  super
+}
+
 model User {
   id            String    @id
   name          String
@@ -24,6 +30,10 @@ model User {
   updatedAt     DateTime  @default(now()) @updatedAt
   sessions      Session[]
   accounts      Account[]
+
+  role     Role?     @default(user)
+  articles Article[]
+  comments Comment[]
 
   @@unique([email])
   @@map("user")
@@ -72,4 +82,44 @@ model Verification {
   updatedAt  DateTime @default(now()) @updatedAt
 
   @@map("verification")
+}
+
+model Category {
+  id       String    @id @default(cuid())
+  name     String
+  articles Article[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@map("categories")
+}
+
+model Article {
+  id         String     @id @default(cuid())
+  title      String
+  body       String     @db.Text
+  categories Category[]
+  author     User?      @relation(fields: [author_id], references: [id])
+  author_id  String?
+  comments   Comment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@map("articles")
+}
+
+model Comment {
+  id         String   @id @default(cuid())
+  body       String   @db.Text
+  user       User?    @relation(fields: [user_id], references: [id])
+  user_id    String?
+  article    Article? @relation(fields: [article_id], references: [id])
+  article_id String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@map("comments")
 }
