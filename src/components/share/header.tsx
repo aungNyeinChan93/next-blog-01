@@ -4,16 +4,19 @@ import { Button } from "../ui/button";
 
 interface Props extends Partial<ComponentProps<typeof Link>> {
   children: ReactNode;
+  icon?: ReactNode | string | null;
 }
 
 const Header: FC<Props> = ({ children, ...props }) => {
   return (
     <React.Fragment>
-      <main className="w-full mx-10 p-4 bg-slate-50 h-auto rounded my-1">
+      <main className="w-full p-4 bg-slate-50 h-auto rounded my-1">
         <div className="flex justify-between items-center">
           <h3 className={props.className}>{children}</h3>
           <Button asChild variant={"outline"}>
-            <Link {...(props as ComponentProps<typeof Link>)}>➕</Link>
+            <Link {...(props as ComponentProps<typeof Link>)}>
+              {props.icon || "➕"}
+            </Link>
           </Button>
         </div>
       </main>
