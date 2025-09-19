@@ -17,6 +17,10 @@ export async function changeRoleAction(initState: any, formData: FormData) {
             data: { role: role as Role }
         }))
 
+        if (!success) {
+            return { success: false, errors: { role: 'fail' } }
+        }
+
     } catch (error) {
         return { success: false, errors: { role: error instanceof Error ? error?.message : "fail" } }
     }
