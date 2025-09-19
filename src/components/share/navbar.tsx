@@ -15,8 +15,9 @@ const Navbar = () => {
 
   const navLinks = [
     { name: "home", path: "/" },
-    { name: "users", path: "/users" },
+    { name: "profile", path: "/profile" },
     { name: "articles", path: "/articles" },
+    { name: "admin-dashboard", path: "/admin-dashboard" },
   ];
 
   const pathname = usePathname();
