@@ -4,13 +4,17 @@ import { Card } from "../ui/card";
 import CommentDialog from "../comments/comment-dialog";
 import { json } from "zod";
 import Header from "../share/header";
-import { XCircle } from "lucide-react";
+import { SquareChevronUp, XCircle } from "lucide-react";
+import CommentCard from "../comments/comment-card";
+import { Arapey } from "next/font/google";
+import { getAllCommentsByArticleId } from "@/features/comments/comments-serverUtils";
 
 interface Props {
   article?: ArticleType | null;
 }
 
-const ArticleDetailCard: FC<Props> = ({ article }) => {
+const ArticleDetailCard: FC<Props> = async ({ article }) => {
+  const comments = await getAllCommentsByArticleId(article?.id as string);
   return (
     <React.Fragment>
       {/* detail card section */}
@@ -47,10 +51,22 @@ const ArticleDetailCard: FC<Props> = ({ article }) => {
       {/* comment sextion */}
       <section className="">
         <Card className="p-4 mt-4 bg-slate-50">
-          <Header href={"#"} icon={<XCircle />}>
-            Comments
+          <Header href={`/articles/${article?.id}`} icon={<SquareChevronUp />}>
+            <div className="flex items-center space-x-1 text-2xl">
+              <span>Comments</span>
+              <span className=" ms-4 text-red-700 bg-slate-300 text-base rounded-full px-4 py-1 ">
+                {article?.comments.length}
+              </span>
+            </div>
           </Header>
-          <pre>{JSON.stringify(article?.comments, null, 2)}</pre>
+
+          <section className="comments">
+            {comments &&
+              Array.isArray(comments) &&
+              comments?.map((comment) => (
+                <CommentCard key={comment?.id} comment={comment} />
+              ))}
+          </section>
         </Card>
       </section>
     </React.Fragment>

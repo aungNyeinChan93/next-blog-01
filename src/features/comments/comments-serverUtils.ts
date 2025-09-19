@@ -15,4 +15,11 @@ export async function getAllCommentsByArticleId(article_id: string) {
         }
     )
     return comments
-}
+};
+
+
+
+export async function deleteCommentById(id: string) {
+    const success = !!(await prisma?.comment.delete({ where: { id } }))
+    return success
+} 

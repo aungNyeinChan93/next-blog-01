@@ -26,4 +26,9 @@ export async function createCommentAction(initialState: any, formData: FormData)
         return { success: false, errors: { body: 'comment fail' } }
     }
     return { success: true }
-}
+};
+
+export async function deleteCommentByAction(id: string) {
+    const success = !!(await prisma?.comment.delete({ where: { id } }))
+    return success;
+} 
