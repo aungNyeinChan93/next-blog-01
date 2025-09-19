@@ -1,6 +1,7 @@
 'use server'
 
 import { auth } from "@/lib/auth"
+import { LoginSchema } from "@/lib/zod-schema/articles-schema"
 import { RegisterSchema } from "@/lib/zod-schema/auth-schema"
 import { headers } from "next/headers"
 
@@ -38,4 +39,30 @@ export async function registerAction(initialState: any, formData: FormData) {
 export async function logoutAction() {
     const { success: isLogout } = await auth.api.signOut({ headers: await headers() })
     return isLogout;
+}
+
+
+
+export async function loginAction(initialState: any, formData: FormData) {
+    const data = Object.fromEntries(formData.entries())
+
+    const { success, data: fields, error } = await LoginSchema.safeParseAsync({ ...data })
+
+    if (!success) {
+        return {
+            success, errors: {
+                email: error?.format().email?._errors[0],
+                password: error?.format().password?._errors[0],
+            }
+        }
+    };
+
+    try {
+        await auth.api.signInEmail({ body: { ...fields }, headers: await headers() })
+
+    } catch (error) {
+        return { success: false, errors: { other: error instanceof Error ? error?.message : 'login fail' } }
+    }
+
+    return { success: true }
 }

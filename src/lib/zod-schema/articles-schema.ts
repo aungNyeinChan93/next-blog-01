@@ -8,3 +8,8 @@ export const ArticleSchema = z.object({
         .refine(file => file.size > 0, 'image field is required')
         .refine(file => ['image/png', 'image/jpeg', 'image/webp', 'image/gif'].includes(file.type), 'unsupport file type')
 })
+
+export const LoginSchema = z.object({
+    email: z.string().email(),
+    password: z.string().min(1, 'password field is required')
+})
