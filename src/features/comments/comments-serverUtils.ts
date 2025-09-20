@@ -22,4 +22,10 @@ export async function getAllCommentsByArticleId(article_id: string) {
 export async function deleteCommentById(id: string) {
     const success = !!(await prisma?.comment.delete({ where: { id } }))
     return success
-} 
+}
+
+
+export async function totalComment() {
+    const total = await prisma?.comment.count()
+    return total
+}

@@ -1,3 +1,4 @@
+import DashboardStatus from "@/components/admin-dashboard/dashbaord-status";
 import Header from "@/components/share/header";
 import { UserCog } from "lucide-react";
 import React from "react";
@@ -9,6 +10,9 @@ const AdminDashboardPage = async () => {
         <Header href={"/admin-users"} icon={<UserCog />}>
           Admin Dashborad
         </Header>
+        <section>
+          <DashboardStatus />
+        </section>
       </main>
     </React.Fragment>
   );
